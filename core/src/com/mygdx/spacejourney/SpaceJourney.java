@@ -1,31 +1,31 @@
 package com.mygdx.spacejourney;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.Game;
 
-public class SpaceJourney extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-	
+import screen.GameScreen;
+
+public class SpaceJourney extends Game {
+
+	GameScreen gameScreen;
+
 	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+	public void create() {
+		gameScreen = new GameScreen();
+		setScreen(gameScreen);
 	}
 
 	@Override
-	public void render () {
-		ScreenUtils.clear(1, 0, 0, 1);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+	public void dispose() {
+		gameScreen.dispose();
 	}
-	
+
 	@Override
-	public void dispose () {
-		batch.dispose();
-		img.dispose();
+	public void render() {
+		super.render();
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		gameScreen.resize(width, height);
 	}
 }
