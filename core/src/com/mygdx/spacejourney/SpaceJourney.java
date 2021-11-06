@@ -2,11 +2,14 @@ package com.mygdx.spacejourney;
 
 import com.badlogic.gdx.Game;
 
+import java.util.Random;
+
 import screen.GameScreen;
 
 public class SpaceJourney extends Game {
 
 	GameScreen gameScreen;
+	public static Random random = new Random();
 
 	@Override
 	public void create() {

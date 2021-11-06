@@ -1,0 +1,132 @@
+
+ShipAndAmor.png
+size: 2048, 2048
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+background
+  rotate: false
+  xy: 0, 128
+  size: 1080, 1920
+  orig: 1080, 1920
+  offset: 0, 0
+  index: -1
+boss
+  rotate: false
+  xy: 128, 0
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 2
+boss
+  rotate: false
+  xy: 768, 0
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 3
+boss1
+  rotate: false
+  xy: 0, 0
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+crep_amor1
+  rotate: false
+  xy: 1080, 428
+  size: 810, 810
+  orig: 810, 810
+  offset: 0, 0
+  index: -1
+crep_amor2
+  rotate: false
+  xy: 1080, 1238
+  size: 810, 810
+  orig: 810, 810
+  offset: 0, 0
+  index: -1
+crep_explosion
+  rotate: false
+  xy: 512, 0
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 2
+crep_explosion
+  rotate: false
+  xy: 896, 0
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
+enemy_crep1
+  rotate: false
+  xy: 1890, 1856
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+enemy_crep2
+  rotate: false
+  xy: 1024, 0
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+explosion1
+  rotate: false
+  xy: 1890, 1792
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+explosion2
+  rotate: false
+  xy: 384, 0
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+explosion3
+  rotate: false
+  xy: 1890, 1920
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+player_amor
+  rotate: false
+  xy: 1420, 267
+  size: 51, 161
+  orig: 51, 161
+  offset: 0, 0
+  index: -1
+player_ship
+  rotate: false
+  xy: 1080, 170
+  size: 340, 258
+  orig: 340, 258
+  offset: 0, 0
+  index: -1
+shot
+  rotate: false
+  xy: 256, 0
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 3
+shot
+  rotate: false
+  xy: 640, 0
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 2
+shot1
+  rotate: false
+  xy: 1471, 364
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
