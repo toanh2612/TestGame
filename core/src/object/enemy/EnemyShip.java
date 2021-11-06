@@ -23,6 +23,7 @@ public class EnemyShip extends Ship {
                      float laserMovementSpeed, float timeBetweenShots,
                      TextureRegion shipTexture,
                      TextureRegion laserTexture) {
+
         super(movementSpeed, shield,
                 width, height,
                 xCenter, yCenter,
