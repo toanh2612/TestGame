@@ -19,8 +19,7 @@ public abstract class Ship {
 
 
     //graphics
-
-    TextureRegion shipTexture;
+    public TextureRegion shipTexture;
     public TextureRegion laserTexture;
 
     public Rectangle boundingBox;
@@ -35,7 +34,6 @@ public abstract class Ship {
                 TextureRegion laserTexture) {
         this.movementSpeed = movementSpeed;
         this.shield = shield;
-
         this.boundingBox = new Rectangle(xCenter - width / 2, yCenter - height / 2, width, height);
         this.laserWidth = laserWidth;
         this.laserHeight = laserHeight;

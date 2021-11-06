@@ -10,9 +10,6 @@ public class Laser {
     public Rectangle boundingBox;
     //laser physical characteristic
     public float movementSpeed;
-
-
-
     TextureRegion textureRegion;
 
     public Laser(float movementSpeed,
@@ -25,15 +22,9 @@ public class Laser {
     }
 
 
-
     public void draw(Batch batch) {
         batch.draw(textureRegion, boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
     }
 
-    /**
-     * @return a bounding box wrap laser
-     */
-    public Rectangle getBoundingBox() {
-        return boundingBox;
-    }
+
 }

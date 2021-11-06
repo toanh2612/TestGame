@@ -85,20 +85,18 @@ public class GameScreen implements Screen {
 
         enemyExplosionTexture = new Texture(Assets.CREP_EXPLOSION);
         //setup game object
-        playerShip = new PlayerShip(600, 3,
+        playerShip = new PlayerShip(1200, 100,
                 200, 200,
                 Constant.WIDTH / 2, Constant.HEIGHT / 6,
-                20, 80, 200, 1,
+                20, 80, 200, 0.5f,
                 playerShipTextureRegion, playerLaserTextureRegion);
+
         enemyShipList = new LinkedList<>();
-
-
         playerLaserList = new LinkedList<>();
         enemyLaserList = new LinkedList<>();
         explosionList = new LinkedList<>();
 
         batch = new SpriteBatch();
-
 
     }
 
@@ -133,6 +131,7 @@ public class GameScreen implements Screen {
         //draw laser
         renderLaser(delta);
 
+        //detect collisions between lasers and ships
         detectCollisions();
 
         renderExplosion(delta);
@@ -211,24 +210,28 @@ public class GameScreen implements Screen {
     private void spawnEnemyShip(float delta) {
         enemySpawnTimer += delta;
         float isEvenNumber = (int) (Math.random() * 100) % 2;
-        System.out.println(score);
-        System.out.println(crepCount);
-        boolean isBossAppear = crepCount == 9 && score == 500;
-        if (enemySpawnTimer > timeBetweenEnemySpawns && crepCount <= 10) {
-            crepCount++;
+        if (enemySpawnTimer > timeBetweenEnemySpawns && crepCount < Constant.TOTAL_CREP_LEVEL_1) {
+            crepCount = crepCount + 1;
+
+            System.out.println("score"+score);
+//            boolean isBossAppear = score >= Constant.MAX_SCORE_LEVEL_1 / 2;
+//            System.out.println(score >= Constant.MAX_SCORE_LEVEL_1 / 2);
             enemyShipList.add(
                     new EnemyShip(
-                            200, isBossAppear ? 10 : 1,
-                            isBossAppear ? 250 : 150, isBossAppear ? 250 : 150,
+                            200, 1,
+                            150, 150,
                             SpaceJourney.random.nextFloat() * Constant.WIDTH - 160, Constant.HEIGHT - 160,
-                            40, 80, isBossAppear ? 250 : 100, 1,
-                            isBossAppear ? bossShipTextureRegion : (isEvenNumber == 0 ? enemyShipTextureRegion : enemyShipTwoTextureRegion),
-                            isBossAppear ? bossLaserTextureRegion : (isEvenNumber == 0 ? enemyLaserTextureRegion : enemyLaserTwoTextureRegion)));
+                            40, 80, 100, 2,
+                            isEvenNumber == 0 ? enemyShipTextureRegion : enemyShipTwoTextureRegion,
+                            isEvenNumber == 0 ? enemyLaserTextureRegion : enemyLaserTwoTextureRegion));
             enemySpawnTimer -= timeBetweenEnemySpawns;
         }
-
     }
 
+    /**
+     * @param enemyShip
+     * @param delta     return enemies
+     */
     private void moveEnemy(EnemyShip enemyShip, float delta) {
         float leftLimit, rightLimit, upLimit, downLimit;
         leftLimit = -enemyShip.boundingBox.x;
@@ -300,21 +303,17 @@ public class GameScreen implements Screen {
                 EnemyShip enemyShip = enemyShipListIterator.next();
                 if (enemyShip.isIntersect(laser.boundingBox)) {
                     if (enemyShip.hitAndCheckDestroy(laser)) {
+                        System.out.println("destroy" + enemyShip.hitAndCheckDestroy(laser));
+                        score = score + 50;
                         enemyShipListIterator.remove();
                         explosionList.add(new Explosion(enemyExplosionTexture,
                                 0.7f,
                                 new Rectangle(enemyShip.boundingBox)));
-                        if (score < 500) {
-                            score += 50;
-                        } else {
-                            score += 500;
-                        }
                     }
                     laserListIterator.remove();
                     break;
                 }
             }
-
         }
 
         laserListIterator = enemyLaserList.listIterator();
