@@ -21,14 +21,14 @@ public class EnemyShip extends Ship {
                      float xCenter, float yCenter,
                      float laserWidth, float laserHeight,
                      float laserMovementSpeed, float timeBetweenShots,
-                     TextureRegion shieldTexture, TextureRegion shipTexture,
+                     TextureRegion shipTexture,
                      TextureRegion laserTexture) {
         super(movementSpeed, shield,
                 width, height,
                 xCenter, yCenter,
                 laserWidth, laserHeight,
                 laserMovementSpeed, timeBetweenShots,
-                shieldTexture, shipTexture, laserTexture);
+                shipTexture, laserTexture);
         directionVector = new Vector2(0, -1);
     }
 
@@ -38,8 +38,8 @@ public class EnemyShip extends Ship {
 
     public void randomizeDirectionVector() {
         double bearing = SpaceJourney.random.nextDouble() * 6.23815;
-        directionVector.x = (float)Math.sin(bearing);
-        directionVector.y = (float)Math.cos(bearing);
+        directionVector.x = (float) Math.sin(bearing);
+        directionVector.y = (float) Math.cos(bearing);
     }
 
     @Override

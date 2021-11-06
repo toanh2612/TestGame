@@ -20,18 +20,18 @@ boss
   index: 2
 boss
   rotate: false
-  xy: 512, 0
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: 1
-boss
-  rotate: false
   xy: 768, 0
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: 3
+boss1
+  rotate: false
+  xy: 0, 0
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
 crep_amor1
   rotate: false
   xy: 1080, 428
@@ -46,23 +46,37 @@ crep_amor2
   orig: 810, 810
   offset: 0, 0
   index: -1
+crep_explosion
+  rotate: false
+  xy: 512, 0
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 2
+crep_explosion
+  rotate: false
+  xy: 896, 0
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: 1
 enemy_crep1
   rotate: false
-  xy: 1420, 364
+  xy: 1890, 1856
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 enemy_crep2
   rotate: false
-  xy: 0, 0
+  xy: 1024, 0
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 explosion1
   rotate: false
-  xy: 1941, 1984
+  xy: 1890, 1792
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -76,14 +90,14 @@ explosion2
   index: -1
 explosion3
   rotate: false
-  xy: 896, 0
+  xy: 1890, 1920
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 player_amor
   rotate: false
-  xy: 1890, 1887
+  xy: 1420, 267
   size: 51, 161
   orig: 51, 161
   offset: 0, 0
@@ -109,10 +123,10 @@ shot
   orig: 128, 128
   offset: 0, 0
   index: 2
-shot
+shot1
   rotate: false
-  xy: 1420, 300
+  xy: 1471, 364
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
-  index: 1
+  index: -1

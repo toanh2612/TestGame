@@ -13,10 +13,9 @@ public class PlayerShip extends Ship {
                       float xCenter, float yCenter,
                       float laserWidth, float laserHeight,
                       float laserMovementSpeed, float timeBetweenShots,
-                      TextureRegion shieldTexture,
                       TextureRegion shipTexture,
                       TextureRegion laserTexture) {
-        super(movementSpeed, shield, width, height, xCenter, yCenter, laserWidth, laserHeight, laserMovementSpeed, timeBetweenShots, shieldTexture, shipTexture, laserTexture);
+        super(movementSpeed, shield, width, height, xCenter, yCenter, laserWidth, laserHeight, laserMovementSpeed, timeBetweenShots, shipTexture, laserTexture);
     }
 
     @Override

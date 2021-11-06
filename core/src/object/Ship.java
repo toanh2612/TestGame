@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 public abstract class Ship {
     public float movementSpeed;
-    int shield;
+    public int shield;
 
 
     //laser information
@@ -20,7 +20,6 @@ public abstract class Ship {
 
     //graphics
 
-    TextureRegion shieldTexture;
     TextureRegion shipTexture;
     public TextureRegion laserTexture;
 
@@ -32,7 +31,7 @@ public abstract class Ship {
                 float xCenter, float yCenter,
                 float laserWidth, float laserHeight, float laserMovementSpeed,
                 float timeBetweenShots,
-                TextureRegion shieldTexture, TextureRegion shipTexture,
+                TextureRegion shipTexture,
                 TextureRegion laserTexture) {
         this.movementSpeed = movementSpeed;
         this.shield = shield;
@@ -42,7 +41,6 @@ public abstract class Ship {
         this.laserHeight = laserHeight;
         this.laserMovementSpeed = laserMovementSpeed;
         this.timeBetweenShots = timeBetweenShots;
-        this.shieldTexture = shieldTexture;
         this.shipTexture = shipTexture;
         this.laserTexture = laserTexture;
     }
@@ -65,10 +63,12 @@ public abstract class Ship {
         return boundingBox.overlaps(otherRectangle);
     }
 
-    public void hit(Laser laser) {
+    public boolean hitAndCheckDestroy(Laser laser) {
         if (shield > 0) {
             shield--;
+            return false;
         }
+        return true;
     }
 
     public void translate(float xChange, float yChange) {
@@ -77,9 +77,5 @@ public abstract class Ship {
 
     public void draw(Batch batch) {
         batch.draw(shipTexture, boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
-        if (shield > 0) {
-            //shield will wrap ship
-            batch.draw(shieldTexture, boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
-        }
     }
 }
