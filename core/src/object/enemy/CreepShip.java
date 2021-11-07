@@ -9,27 +9,28 @@ import java.util.Arrays;
 import object.Laser;
 import object.Ship;
 
-public class EnemyShip extends Ship {
+public class CreepShip extends Ship {
 
     Vector2 directionVector;
     float timeSinceLastDirectionChange = 0;
     float directionChangeFrequency = 0.75f;
 
 
-    public EnemyShip(float movementSpeed, int shield,
+    public CreepShip(float movementSpeed, int shield,
                      float width, float height,
                      float xCenter, float yCenter,
                      float laserWidth, float laserHeight,
                      float laserMovementSpeed, float timeBetweenShots,
                      TextureRegion shipTexture,
                      TextureRegion laserTexture) {
-
         super(movementSpeed, shield,
                 width, height,
                 xCenter, yCenter,
                 laserWidth, laserHeight,
                 laserMovementSpeed, timeBetweenShots,
                 shipTexture, laserTexture);
+
+
         directionVector = new Vector2(0, -1);
     }
 

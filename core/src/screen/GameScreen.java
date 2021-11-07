@@ -1,8 +1,6 @@
 package screen;
 
 
-import static utility.Constant.TOUCH_MOVEMENT_THRESHOLD;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -18,18 +16,18 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.spacejourney.SpaceJourney;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.ListIterator;
-import java.util.Random;
 
 import assets.Assets;
 import object.Explosion;
-import object.enemy.EnemyShip;
+import object.enemy.BossShip;
+import object.enemy.CreepShip;
 import object.Laser;
 import object.player.PlayerShip;
-import object.Ship;
 import utility.Constant;
+import view.GameHUD;
 
 
 public class GameScreen implements Screen {
@@ -44,19 +42,22 @@ public class GameScreen implements Screen {
 
     private TextureRegion
             playerShipTextureRegion, playerLaserTextureRegion,
-            enemyShipTextureRegion, enemyLaserTextureRegion,
-            enemyShipTwoTextureRegion, enemyLaserTwoTextureRegion,
+            creepShipTextureRegion, creepLaserTextureRegion,
+            creepShipTwoTextureRegion, creepLaserTwoTextureRegion,
             bossShipTextureRegion, bossLaserTextureRegion;
 
     private Texture enemyExplosionTexture;
     private PlayerShip playerShip;
-    private LinkedList<EnemyShip> enemyShipList;
+    private LinkedList<CreepShip> creepShipList;
+    private BossShip bossShip;
 
     private LinkedList<Laser> playerLaserList;
-    private LinkedList<Laser> enemyLaserList;
+    private LinkedList<Laser> creepLaserList;
+    private LinkedList<Laser> bossLaserlist;
+
     private LinkedList<Explosion> explosionList;
-    private float timeBetweenEnemySpawns = 1f;
-    private float enemySpawnTimer = 0;
+    private float timeBetweenCreepSpawns = 1f;
+    private float creepSpawnTimer = 0;
     private int score = 0;
     private int crepCount = 0;
 
@@ -64,42 +65,57 @@ public class GameScreen implements Screen {
     private int backgroundOffset;
 
 
+
+    //head up Display
+    private GameHUD gameHUD;
+
     public GameScreen() {
         camera = new OrthographicCamera(); //overview
         viewport = new StretchViewport(Constant.WIDTH, Constant.HEIGHT, camera);
         textureAtlas = new TextureAtlas(Assets.ATLAS_SHIP_AND_SHOT);
+
+        gameHUD = new GameHUD();
+
         background = textureAtlas.findRegion("background");
         backgroundOffset = 0;
 
         playerShipTextureRegion = textureAtlas.findRegion("player_ship");
-        enemyShipTextureRegion = textureAtlas.findRegion("enemy_crep1");
-        enemyShipTwoTextureRegion = textureAtlas.findRegion("enemy_crep2");
-
-
         playerLaserTextureRegion = textureAtlas.findRegion("player_amor");
-        enemyLaserTwoTextureRegion = textureAtlas.findRegion("crep_amor2");
-        enemyLaserTextureRegion = textureAtlas.findRegion("crep_amor1");
+
+        creepShipTextureRegion = textureAtlas.findRegion("crep1");
+        creepShipTwoTextureRegion = textureAtlas.findRegion("crep2");
+        creepLaserTwoTextureRegion = textureAtlas.findRegion("crep_amor2");
+        creepLaserTextureRegion = textureAtlas.findRegion("crep_amor1");
 
         bossShipTextureRegion = textureAtlas.findRegion("boss1");
-        bossLaserTextureRegion = textureAtlas.findRegion("shot1");
+        bossLaserTextureRegion = textureAtlas.findRegion("crep_amor1");
 
         enemyExplosionTexture = new Texture(Assets.CREP_EXPLOSION);
         //setup game object
+        //ship
         playerShip = new PlayerShip(1200, 100,
                 200, 200,
                 Constant.WIDTH / 2, Constant.HEIGHT / 6,
                 20, 80, 200, 0.5f,
                 playerShipTextureRegion, playerLaserTextureRegion);
+        bossShip = new BossShip(600, 20,
+                250, 250,
+                SpaceJourney.random.nextFloat() * Constant.WIDTH - 250, Constant.HEIGHT - 250,
+                20, 80, 200, 0.5f,
+                bossShipTextureRegion, bossLaserTextureRegion);
+        creepShipList = new LinkedList<>();
 
-        enemyShipList = new LinkedList<>();
+        //laser
         playerLaserList = new LinkedList<>();
-        enemyLaserList = new LinkedList<>();
+        creepLaserList = new LinkedList<>();
+        bossLaserlist = new LinkedList<>();
+
+        //explosion
         explosionList = new LinkedList<>();
 
         batch = new SpriteBatch();
 
     }
-
 
     @Override
     public void show() {
@@ -107,26 +123,29 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
         batch.begin();
 
         renderBackground();
         detectInput(delta);
 
         playerShip.update(delta);
-        spawnEnemyShip(delta);
-
-        ListIterator<EnemyShip> enemyShipListIterator = enemyShipList.listIterator();
-        while (enemyShipListIterator.hasNext()) {
-            EnemyShip enemyShip = enemyShipListIterator.next();
-            moveEnemy(enemyShip, delta);
-            enemyShip.update(delta);
-            enemyShip.draw(batch);
-
-        }
-
 
         //draw ship
         playerShip.draw(batch);
+
+        if (score >= Constant.MAX_SCORE_LEVEL_1 / 2) {
+            moveBoss(bossShip, delta);
+            bossShip.update(delta);
+            bossShip.draw(batch);
+        } else {
+            spawnCreepShip(delta);
+            for (CreepShip creepShip : creepShipList) {
+                moveCreep(creepShip, delta);
+                creepShip.update(delta);
+                creepShip.draw(batch);
+            }
+        }
 
         //draw laser
         renderLaser(delta);
@@ -136,13 +155,30 @@ public class GameScreen implements Screen {
 
         renderExplosion(delta);
 
+        gameHUD.draw(batch);
         batch.end();
+    }
+
+    private void spawnCreepShip(float delta) {
+        creepSpawnTimer += delta;
+        float isEvenNumber = (int) (Math.random() * 100) % 2;
+        if (crepCount < Constant.TOTAL_CREP_LEVEL_1 && creepSpawnTimer > timeBetweenCreepSpawns) {
+            creepShipList.add(
+                    new CreepShip(
+                            200, 1,
+                            150, 150,
+                            SpaceJourney.random.nextFloat() * Constant.WIDTH - 160, Constant.HEIGHT - 160,
+                            40, 80, 100, 1,
+                            isEvenNumber == 0 ? creepShipTextureRegion : creepShipTwoTextureRegion,
+                            isEvenNumber == 0 ? creepLaserTextureRegion : creepLaserTwoTextureRegion));
+            creepSpawnTimer -= timeBetweenCreepSpawns;
+            crepCount++;
+        }
     }
 
     private void detectInput(float delta) {
         //keyboard
         float leftLimit, rightLimit, upLimit, downLimit;
-//        System.out.println(-playerShip.boundingBox.x);
         leftLimit = -playerShip.boundingBox.x;
         downLimit = -playerShip.boundingBox.y;
         rightLimit = Constant.WIDTH - playerShip.boundingBox.x - playerShip.boundingBox.width;
@@ -197,51 +233,16 @@ public class GameScreen implements Screen {
         }
     }
 
-    private void renderBackground() {
-        backgroundOffset++;
-        if (backgroundOffset % Constant.HEIGHT == 0) {
-            backgroundOffset = 0;
-        }
-        //loop background
-        batch.draw(background, 0, -backgroundOffset, Constant.WIDTH, Constant.HEIGHT);
-        batch.draw(background, 0, -backgroundOffset + Constant.HEIGHT, Constant.WIDTH, Constant.HEIGHT);
-    }
-
-    private void spawnEnemyShip(float delta) {
-        enemySpawnTimer += delta;
-        float isEvenNumber = (int) (Math.random() * 100) % 2;
-        if (enemySpawnTimer > timeBetweenEnemySpawns && crepCount < Constant.TOTAL_CREP_LEVEL_1) {
-            crepCount = crepCount + 1;
-
-            System.out.println("score"+score);
-//            boolean isBossAppear = score >= Constant.MAX_SCORE_LEVEL_1 / 2;
-//            System.out.println(score >= Constant.MAX_SCORE_LEVEL_1 / 2);
-            enemyShipList.add(
-                    new EnemyShip(
-                            200, 1,
-                            150, 150,
-                            SpaceJourney.random.nextFloat() * Constant.WIDTH - 160, Constant.HEIGHT - 160,
-                            40, 80, 100, 2,
-                            isEvenNumber == 0 ? enemyShipTextureRegion : enemyShipTwoTextureRegion,
-                            isEvenNumber == 0 ? enemyLaserTextureRegion : enemyLaserTwoTextureRegion));
-            enemySpawnTimer -= timeBetweenEnemySpawns;
-        }
-    }
-
-    /**
-     * @param enemyShip
-     * @param delta     return enemies
-     */
-    private void moveEnemy(EnemyShip enemyShip, float delta) {
+    private void moveBoss(BossShip bossShip, float delta) {
         float leftLimit, rightLimit, upLimit, downLimit;
-        leftLimit = -enemyShip.boundingBox.x;
-        downLimit = (float) Constant.HEIGHT / 2 - enemyShip.boundingBox.y;
-        rightLimit = Constant.WIDTH - enemyShip.boundingBox.x - enemyShip.boundingBox.width;
-        upLimit = Constant.HEIGHT - enemyShip.boundingBox.y - enemyShip.boundingBox.height;
+        leftLimit = -bossShip.boundingBox.x;
+        downLimit = (float) Constant.HEIGHT / 2 - bossShip.boundingBox.y;
+        rightLimit = Constant.WIDTH - bossShip.boundingBox.x - bossShip.boundingBox.width;
+        upLimit = Constant.HEIGHT - bossShip.boundingBox.y - bossShip.boundingBox.height;
 
         //scale to the maximum speed of the ship
-        float xMove = enemyShip.getDirectionVector().x * enemyShip.movementSpeed * delta;
-        float yMove = enemyShip.getDirectionVector().y * enemyShip.movementSpeed * delta;
+        float xMove = bossShip.getDirectionVector().x * bossShip.movementSpeed * delta;
+        float yMove = bossShip.getDirectionVector().y * bossShip.movementSpeed * delta;
 
         if (xMove > 0) xMove = Math.min(xMove, rightLimit);
         else xMove = Math.max(xMove, leftLimit);
@@ -249,47 +250,29 @@ public class GameScreen implements Screen {
         if (yMove > 0) yMove = Math.min(yMove, upLimit);
         else yMove = Math.max(yMove, downLimit);
 
-        enemyShip.translate(xMove, yMove);
+        bossShip.translate(xMove, yMove);
     }
 
+    private void moveCreep(CreepShip creepShip, float delta) {
+        float leftLimit, rightLimit, upLimit, downLimit;
+        leftLimit = -creepShip.boundingBox.x;
+        downLimit = (float) Constant.HEIGHT / 2 - creepShip.boundingBox.y;
+        rightLimit = Constant.WIDTH - creepShip.boundingBox.x - creepShip.boundingBox.width;
+        upLimit = Constant.HEIGHT - creepShip.boundingBox.y - creepShip.boundingBox.height;
 
-    /**
-     * @param delta draw laser
-     */
-    private void renderLaser(float delta) {
-        if (playerShip.canFireLaser()) {
-            Laser[] lasers = playerShip.fireLasers();
-            Collections.addAll(playerLaserList, lasers);
-        }
-        ListIterator<EnemyShip> enemyShipListIterator = enemyShipList.listIterator();
-        while (enemyShipListIterator.hasNext()) {
-            EnemyShip enemyShip = enemyShipListIterator.next();
-            if (enemyShip.canFireLaser()) {
-                Laser[] lasers = enemyShip.fireLasers();
-                Collections.addAll(enemyLaserList, lasers);
-            }
-        }
+        //scale to the maximum speed of the ship
+        float xMove = creepShip.getDirectionVector().x * creepShip.movementSpeed * delta;
+        float yMove = creepShip.getDirectionVector().y * creepShip.movementSpeed * delta;
 
+        if (xMove > 0) xMove = Math.min(xMove, rightLimit);
+        else xMove = Math.max(xMove, leftLimit);
 
-        ListIterator<Laser> iterator = playerLaserList.listIterator();
-        while (iterator.hasNext()) {
-            Laser laser = iterator.next();
-            laser.draw(batch);
-            laser.boundingBox.y += laser.movementSpeed * delta;
-            if (laser.boundingBox.y > Constant.HEIGHT) {
-                iterator.remove();
-            }
-        }
-        iterator = enemyLaserList.listIterator();
-        while (iterator.hasNext()) {
-            Laser laser = iterator.next();
-            laser.draw(batch);
-            laser.boundingBox.y -= laser.movementSpeed * delta;
-            if (laser.boundingBox.y + laser.boundingBox.height < 0) {
-                iterator.remove();
-            }
-        }
+        if (yMove > 0) yMove = Math.min(yMove, upLimit);
+        else yMove = Math.max(yMove, downLimit);
+
+        creepShip.translate(xMove, yMove);
     }
+
 
     /**
      * check whether player or enemy laser intersects
@@ -298,25 +281,41 @@ public class GameScreen implements Screen {
         ListIterator<Laser> laserListIterator = playerLaserList.listIterator();
         while (laserListIterator.hasNext()) {
             Laser laser = laserListIterator.next();
-            ListIterator<EnemyShip> enemyShipListIterator = enemyShipList.listIterator();
-            while (enemyShipListIterator.hasNext()) {
-                EnemyShip enemyShip = enemyShipListIterator.next();
-                if (enemyShip.isIntersect(laser.boundingBox)) {
-                    if (enemyShip.hitAndCheckDestroy(laser)) {
-                        System.out.println("destroy" + enemyShip.hitAndCheckDestroy(laser));
-                        score = score + 50;
-                        enemyShipListIterator.remove();
-                        explosionList.add(new Explosion(enemyExplosionTexture,
-                                0.7f,
-                                new Rectangle(enemyShip.boundingBox)));
+            if (score < (int) Constant.MAX_SCORE_LEVEL_1 / 2) {
+                ListIterator<CreepShip> creepShipListIterator = creepShipList.listIterator();
+                while (creepShipListIterator.hasNext()) {
+                    CreepShip creepShip = creepShipListIterator.next();
+                    if (creepShip.isIntersect(laser.boundingBox)) {
+                        if (creepShip.hitAndCheckDestroy(laser)) {
+                            creepShipListIterator.remove();
+                            explosionList.add(new Explosion(enemyExplosionTexture,
+                                    0.7f,
+                                    new Rectangle(creepShip.boundingBox)));
+                            score = score + 50;
+                        }
+                        laserListIterator.remove();
+                        break;
+                    }
+                }
+            } else {
+                if (bossShip.isIntersect(laser.boundingBox)) {
+                    System.out.println("go here");
+                    if (bossShip.hitAndCheckDestroy(laser)) {
+                        explosionList.add(
+                                new Explosion(enemyExplosionTexture,
+                                        1.6f,
+                                        new Rectangle(bossShip.boundingBox)));
+                        score = score + 500;
                     }
                     laserListIterator.remove();
-                    break;
                 }
             }
         }
-
-        laserListIterator = enemyLaserList.listIterator();
+        if (score < (int) Constant.MAX_SCORE_LEVEL_1 / 2) {
+            laserListIterator = creepLaserList.listIterator();
+        } else {
+            laserListIterator = bossLaserlist.listIterator();
+        }
         while (laserListIterator.hasNext()) {
             Laser laser = laserListIterator.next();
             if (playerShip.isIntersect(laser.boundingBox)) {
@@ -325,12 +324,13 @@ public class GameScreen implements Screen {
                             new Explosion(enemyExplosionTexture,
                                     1.6f,
                                     new Rectangle(playerShip.boundingBox)));
-                    playerShip.shield = 10;
                 }
                 laserListIterator.remove();
             }
         }
+
     }
+
 
     public void renderExplosion(float delta) {
         ListIterator<Explosion> explosionListIterator = explosionList.listIterator();
@@ -344,6 +344,70 @@ public class GameScreen implements Screen {
             }
         }
     }
+
+
+    private void renderLaser(float delta) {
+        if (playerShip.canFireLaser()) {
+            Laser[] lasers = playerShip.fireLasers();
+            playerLaserList.addAll(Arrays.asList(lasers));
+        }
+        if (bossShip.canFireLaser()) {
+            Laser[] lasers = bossShip.fireLasers();
+            bossLaserlist.addAll(Arrays.asList(lasers));
+        }
+
+        ListIterator<CreepShip> creepShipListIterator = creepShipList.listIterator();
+        while (creepShipListIterator.hasNext()) {
+            CreepShip creepShip = creepShipListIterator.next();
+            if (creepShip.canFireLaser()) {
+                Laser[] lasers = creepShip.fireLasers();
+                creepLaserList.addAll(Arrays.asList(lasers));
+            }
+        }
+
+
+        ListIterator<Laser> iterator = playerLaserList.listIterator();
+        while (iterator.hasNext()) {
+            Laser laser = iterator.next();
+            laser.draw(batch);
+            laser.boundingBox.y += laser.movementSpeed * delta;
+            if (laser.boundingBox.y > Constant.HEIGHT) {
+                iterator.remove();
+            }
+        }
+
+
+        iterator = creepLaserList.listIterator();
+        while (iterator.hasNext()) {
+            Laser laser = iterator.next();
+            laser.draw(batch);
+            laser.boundingBox.y -= laser.movementSpeed * delta;
+            if (laser.boundingBox.y + laser.boundingBox.height < 0) {
+                iterator.remove();
+            }
+        }
+
+        iterator = bossLaserlist.listIterator();
+        while (iterator.hasNext()) {
+            Laser laser = iterator.next();
+            laser.draw(batch);
+            laser.boundingBox.y -= laser.movementSpeed * delta;
+            if (laser.boundingBox.y + laser.boundingBox.height < 0) {
+                iterator.remove();
+            }
+        }
+    }
+
+    private void renderBackground() {
+        backgroundOffset++;
+        if (backgroundOffset % Constant.HEIGHT == 0) {
+            backgroundOffset = 0;
+        }
+        //loop background
+        batch.draw(background, 0, -backgroundOffset, Constant.WIDTH, Constant.HEIGHT);
+        batch.draw(background, 0, -backgroundOffset + Constant.HEIGHT, Constant.WIDTH, Constant.HEIGHT);
+    }
+
 
     @Override
     public void resize(int width, int height) {
