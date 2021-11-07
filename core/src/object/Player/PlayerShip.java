@@ -16,6 +16,7 @@ public class PlayerShip extends Ship {
                       TextureRegion shipTexture,
                       TextureRegion laserTexture) {
         super(movementSpeed, shield, width, height, xCenter, yCenter, laserWidth, laserHeight, laserMovementSpeed, timeBetweenShots, shipTexture, laserTexture);
+
     }
 
     @Override

@@ -1,0 +1,132 @@
+
+BtnSetting.png
+size: 2048, 2048
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+Close_BTN
+  rotate: false
+  xy: 214, 214
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Header
+  rotate: false
+  xy: 2, 498
+  size: 435, 59
+  orig: 435, 59
+  offset: 0, 0
+  index: -1
+Health_Bar_Table
+  rotate: false
+  xy: 2, 426
+  size: 400, 70
+  orig: 400, 70
+  offset: 0, 0
+  index: -1
+Health_Dot
+  rotate: false
+  xy: 1886, 1949
+  size: 30, 58
+  orig: 30, 58
+  offset: 0, 0
+  index: -1
+Menu_BTN
+  rotate: false
+  xy: 1101, 395
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Music
+  rotate: false
+  xy: 870, 559
+  size: 217, 46
+  orig: 217, 46
+  offset: 0, 0
+  index: -1
+Music_BTN
+  rotate: false
+  xy: 677, 347
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Notifications
+  rotate: false
+  xy: 2, 559
+  size: 498, 46
+  orig: 498, 46
+  offset: 0, 0
+  index: -1
+Notifications_BTN
+  rotate: false
+  xy: 1525, 395
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Ok_BTN
+  rotate: false
+  xy: 2, 214
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Pause_BTN
+  rotate: false
+  xy: 2, 2
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Play_BTN
+  rotate: false
+  xy: 214, 2
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Sound
+  rotate: false
+  xy: 439, 511
+  size: 236, 46
+  orig: 236, 46
+  offset: 0, 0
+  index: -1
+Sound_BTN
+  rotate: false
+  xy: 889, 347
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Vibration
+  rotate: false
+  xy: 502, 559
+  size: 366, 46
+  orig: 366, 46
+  offset: 0, 0
+  index: -1
+Vibration_BTN
+  rotate: false
+  xy: 1313, 395
+  size: 210, 210
+  orig: 210, 210
+  offset: 0, 0
+  index: -1
+Window
+  rotate: false
+  xy: 2, 607
+  size: 940, 1400
+  orig: 940, 1400
+  offset: 0, 0
+  index: 2
+Window
+  rotate: false
+  xy: 944, 607
+  size: 940, 1400
+  orig: 940, 1400
+  offset: 0, 0
+  index: -1
