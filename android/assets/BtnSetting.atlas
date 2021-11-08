@@ -4,128 +4,184 @@ size: 2048, 2048
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
+Boss_HP_CENTER
+  rotate: false
+  xy: 2, 510
+  size: 890, 20
+  orig: 890, 20
+  offset: 0, 0
+  index: -1
+Boss_HP_LEFT
+  rotate: false
+  xy: 1822, 624
+  size: 50, 20
+  orig: 50, 20
+  offset: 0, 0
+  index: -1
+Boss_HP_RIGHT
+  rotate: false
+  xy: 1886, 2026
+  size: 50, 20
+  orig: 50, 20
+  offset: 0, 0
+  index: -1
+Boss_HP_Table
+  rotate: false
+  xy: 2, 532
+  size: 1040, 30
+  orig: 1040, 30
+  offset: 0, 0
+  index: -1
+Boss_Name_Table
+  rotate: false
+  xy: 2, 10
+  size: 300, 50
+  orig: 300, 50
+  offset: 0, 0
+  index: -1
 Close_BTN
   rotate: false
-  xy: 214, 214
+  xy: 1540, 386
   size: 210, 210
   orig: 210, 210
   offset: 0, 0
   index: -1
 Header
   rotate: false
-  xy: 2, 498
+  xy: 2, 449
   size: 435, 59
   orig: 435, 59
   offset: 0, 0
   index: -1
 Health_Bar_Table
   rotate: false
-  xy: 2, 426
+  xy: 2, 377
   size: 400, 70
   orig: 400, 70
   offset: 0, 0
   index: -1
 Health_Dot
   rotate: false
-  xy: 1886, 1949
+  xy: 304, 2
   size: 30, 58
   orig: 30, 58
   offset: 0, 0
   index: -1
 Menu_BTN
   rotate: false
-  xy: 1101, 395
+  xy: 651, 250
   size: 210, 210
   orig: 210, 210
   offset: 0, 0
   index: -1
 Music
   rotate: false
-  xy: 870, 559
+  xy: 1321, 550
   size: 217, 46
   orig: 217, 46
   offset: 0, 0
   index: -1
 Music_BTN
   rotate: false
-  xy: 677, 347
+  xy: 439, 250
   size: 210, 210
   orig: 210, 210
   offset: 0, 0
   index: -1
 Notifications
   rotate: false
-  xy: 2, 559
+  xy: 1084, 598
   size: 498, 46
   orig: 498, 46
   offset: 0, 0
   index: -1
 Notifications_BTN
   rotate: false
-  xy: 1525, 395
+  xy: 850, 38
   size: 210, 210
   orig: 210, 210
   offset: 0, 0
   index: -1
 Ok_BTN
   rotate: false
-  xy: 2, 214
+  xy: 2, 62
   size: 210, 210
   orig: 210, 210
   offset: 0, 0
   index: -1
 Pause_BTN
   rotate: false
-  xy: 2, 2
+  xy: 214, 62
   size: 210, 210
   orig: 210, 210
   offset: 0, 0
   index: -1
 Play_BTN
   rotate: false
-  xy: 214, 2
+  xy: 1752, 386
   size: 210, 210
   orig: 210, 210
   offset: 0, 0
   index: -1
+Score
+  rotate: false
+  xy: 1084, 551
+  size: 235, 45
+  orig: 235, 45
+  offset: 0, 0
+  index: -1
 Sound
   rotate: false
-  xy: 439, 511
+  xy: 1584, 598
   size: 236, 46
   orig: 236, 46
   offset: 0, 0
   index: -1
 Sound_BTN
   rotate: false
-  xy: 889, 347
+  xy: 426, 38
   size: 210, 210
   orig: 210, 210
   offset: 0, 0
   index: -1
+Stats_Bar
+  rotate: false
+  xy: 2, 564
+  size: 1080, 80
+  orig: 1080, 80
+  offset: 0, 0
+  index: -1
+Table
+  rotate: false
+  xy: 2, 274
+  size: 361, 101
+  orig: 361, 101
+  offset: 0, 0
+  index: -1
 Vibration
   rotate: false
-  xy: 502, 559
+  xy: 439, 462
   size: 366, 46
   orig: 366, 46
   offset: 0, 0
   index: -1
 Vibration_BTN
   rotate: false
-  xy: 1313, 395
+  xy: 638, 38
   size: 210, 210
   orig: 210, 210
   offset: 0, 0
   index: -1
 Window
   rotate: false
-  xy: 2, 607
+  xy: 2, 646
   size: 940, 1400
   orig: 940, 1400
   offset: 0, 0
   index: 2
 Window
   rotate: false
-  xy: 944, 607
+  xy: 944, 646
   size: 940, 1400
   orig: 940, 1400
   offset: 0, 0

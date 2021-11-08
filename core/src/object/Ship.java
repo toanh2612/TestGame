@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 public abstract class Ship {
     public float movementSpeed;
-    public int shield;
+    public int health;
 
 
     //laser information
@@ -25,7 +25,7 @@ public abstract class Ship {
     public Rectangle boundingBox;
 
 
-    public Ship(float movementSpeed, int shield,
+    public Ship(float movementSpeed, int health,
                 float width, float height,
                 float xCenter, float yCenter,
                 float laserWidth, float laserHeight, float laserMovementSpeed,
@@ -33,7 +33,7 @@ public abstract class Ship {
                 TextureRegion shipTexture,
                 TextureRegion laserTexture) {
         this.movementSpeed = movementSpeed;
-        this.shield = shield;
+        this.health = health;
         this.boundingBox = new Rectangle(xCenter - width / 2, yCenter - height / 2, width, height);
         this.laserWidth = laserWidth;
         this.laserHeight = laserHeight;
@@ -62,8 +62,8 @@ public abstract class Ship {
     }
 
     public boolean hitAndCheckDestroy(Laser laser) {
-        if (shield > 0) {
-            shield--;
+        if (health > 0) {
+            health--;
             return false;
         }
         return true;
