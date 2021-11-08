@@ -1,4 +1,4 @@
-package object.player;
+package object.Player;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -8,14 +8,14 @@ import object.Ship;
 
 public class PlayerShip extends Ship {
 
-    public PlayerShip(float movementSpeed, int shield,
+    public PlayerShip(float movementSpeed, int health,
                       float width, float height,
                       float xCenter, float yCenter,
                       float laserWidth, float laserHeight,
                       float laserMovementSpeed, float timeBetweenShots,
                       TextureRegion shipTexture,
                       TextureRegion laserTexture) {
-        super(movementSpeed, shield, width, height, xCenter, yCenter, laserWidth, laserHeight, laserMovementSpeed, timeBetweenShots, shipTexture, laserTexture);
+        super(movementSpeed, health, width, height, xCenter, yCenter, laserWidth, laserHeight, laserMovementSpeed, timeBetweenShots, shipTexture, laserTexture);
 
     }
 

@@ -22,10 +22,12 @@ import java.util.ListIterator;
 
 import assets.Assets;
 import object.Explosion;
+import object.Player.Player;
+import object.Player.PlayerShip;
+import object.enemy.Boss;
 import object.enemy.BossShip;
 import object.enemy.CreepShip;
 import object.Laser;
-import object.player.PlayerShip;
 import utility.Constant;
 import view.GameHUD;
 
@@ -60,21 +62,28 @@ public class GameScreen implements Screen {
     private float creepSpawnTimer = 0;
     private int score = 0;
     private int crepCount = 0;
-
+    private int playerHealth = 0;
+    private int bossHealth = 0;
     //timing
     private int backgroundOffset;
 
 
-
     //head up Display
     private GameHUD gameHUD;
+    private Player player;
+    private Boss boss;
 
     public GameScreen() {
         camera = new OrthographicCamera(); //overview
         viewport = new StretchViewport(Constant.WIDTH, Constant.HEIGHT, camera);
         textureAtlas = new TextureAtlas(Assets.ATLAS_SHIP_AND_SHOT);
 
-        gameHUD = new GameHUD();
+        gameHUD = new GameHUD(2);
+        player = new Player();
+        boss = new Boss(2);
+
+        playerHealth = player.getHealth();
+        bossHealth = boss.getHealth();
 
         background = textureAtlas.findRegion("background");
         backgroundOffset = 0;
@@ -93,15 +102,24 @@ public class GameScreen implements Screen {
         enemyExplosionTexture = new Texture(Assets.CREP_EXPLOSION);
         //setup game object
         //ship
-        playerShip = new PlayerShip(1200, 100,
+        playerShip = new PlayerShip(
+                player.getShipMovementSpeed(),
+                player.getHealth(),
                 200, 200,
                 Constant.WIDTH / 2, Constant.HEIGHT / 6,
-                20, 80, 200, 0.5f,
-                playerShipTextureRegion, playerLaserTextureRegion);
-        bossShip = new BossShip(600, 20,
+                20, 80,
+                player.getLaserMovementSpeed(),
+                player.getTimeBetweenShots(),
+                playerShipTextureRegion,
+                playerLaserTextureRegion);
+        bossShip = new BossShip(boss.getShipMovementSpeed(),
+                boss.getHealth(),
                 250, 250,
-                SpaceJourney.random.nextFloat() * Constant.WIDTH - 250, Constant.HEIGHT - 250,
-                20, 80, 200, 0.5f,
+                SpaceJourney.random.nextFloat() * Constant.WIDTH - 250,
+                Constant.HEIGHT - 250,
+                20, 80,
+                boss.getLaserMovementSpeed(),
+                boss.getTimeBetweenShots(),
                 bossShipTextureRegion, bossLaserTextureRegion);
         creepShipList = new LinkedList<>();
 
@@ -130,11 +148,14 @@ public class GameScreen implements Screen {
         detectInput(delta);
 
         playerShip.update(delta);
-
+        gameHUD.updatePlayerHealth(playerHealth);
+        gameHUD.updateBossHealth(bossHealth);
+        gameHUD.updateScore(score);
         //draw ship
         playerShip.draw(batch);
 
         if (score >= Constant.MAX_SCORE_LEVEL_1 / 2) {
+            gameHUD.drawBossHealthBar(batch);
             moveBoss(bossShip, delta);
             bossShip.update(delta);
             bossShip.draw(batch);
@@ -299,7 +320,6 @@ public class GameScreen implements Screen {
                 }
             } else {
                 if (bossShip.isIntersect(laser.boundingBox)) {
-                    System.out.println("go here");
                     if (bossShip.hitAndCheckDestroy(laser)) {
                         explosionList.add(
                                 new Explosion(enemyExplosionTexture,
@@ -307,6 +327,7 @@ public class GameScreen implements Screen {
                                         new Rectangle(bossShip.boundingBox)));
                         score = score + 500;
                     }
+                    bossHealth--;
                     laserListIterator.remove();
                 }
             }
@@ -324,7 +345,9 @@ public class GameScreen implements Screen {
                             new Explosion(enemyExplosionTexture,
                                     1.6f,
                                     new Rectangle(playerShip.boundingBox)));
+
                 }
+                playerHealth--;
                 laserListIterator.remove();
             }
         }

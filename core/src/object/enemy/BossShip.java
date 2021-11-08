@@ -14,21 +14,19 @@ public class BossShip extends Ship {
     float directionChangeFrequency = 1f;
 
 
-    public BossShip(float movementSpeed, int shield,
+    public BossShip(float movementSpeed, int health,
                     float width, float height,
                     float xCenter, float yCenter,
                     float laserWidth, float laserHeight,
                     float laserMovementSpeed, float timeBetweenShots,
                     TextureRegion shipTexture,
                     TextureRegion laserTexture) {
-        super(movementSpeed, shield,
+        super(movementSpeed, health,
                 width, height,
                 xCenter, yCenter,
                 laserWidth, laserHeight,
                 laserMovementSpeed, timeBetweenShots,
                 shipTexture, laserTexture);
-
-        System.out.println("shield"+shield);
         directionVector = new Vector2(0, -1);
     }
 
